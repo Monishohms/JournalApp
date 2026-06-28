@@ -9,12 +9,14 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Service
 @Slf4j
 public class UserService {
 
@@ -32,6 +34,7 @@ public class UserService {
     public boolean saveNewUser(User user){
         try{
             user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setJournalEntries(new ArrayList<>());
             user.setRoles(Arrays.asList("User"));
             userRepository.save(user);
             return true;
@@ -39,10 +42,6 @@ public class UserService {
         catch (Exception e){
             System.out.println("it came inside the catch block");
             log.error("This Error is for {} ", user.getUserName(),e);
-            log.debug("LOLOLOLO");
-            log.warn("LAMOLAMOLAMO");
-            log.info("ROFLROFLROFLROFL");
-            log.trace("FCKFCKFCKFCK");
             return false;
         }
 
