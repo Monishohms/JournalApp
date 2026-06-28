@@ -62,8 +62,8 @@ public class UserScheduler {
 
                     SentimentData buildSentimentData = SentimentData.builder().email(user.getEmail()).sentiment("Sentiment for last 7 Days is " + mostFreqSentimenet).build();
                     kafkaTemplate.send("weekly-sentiments", user.getEmail(),buildSentimentData);
-                } catch (Exception e) {
-                    log.error("Exception Ocurred at " , e);
+                } catch (Exception e) { // kafka fallback
+                    eMailService.sendMail(user.getEmail(), "Sentiment for last 7 days is ", mostFreqSentimenet.toString()  );
                 }
 
 
